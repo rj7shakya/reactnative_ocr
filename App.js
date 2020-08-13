@@ -29,8 +29,8 @@ const App = () => {
           width: 300,
           height: 50,
         }).then(async (img) => {
-          setResult([]);
-          setOfflineres([]);
+          setResult(null);
+          setOfflineres(null);
           setImage(img.path);
           const visionResp = await RNTextDetector.detectFromUri(img.path);
           setResult(visionResp);
