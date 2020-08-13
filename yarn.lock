@@ -1140,6 +1140,11 @@
     opencollective-postinstall "^2.0.1"
     superstruct "^0.6.2"
 
+"@react-native-firebase/ml-vision@^7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/ml-vision/-/ml-vision-7.3.1.tgz#f21a48ad02c88f9546f3f02ff6f7b1f7d151e7a8"
+  integrity sha512-ZREUepkNbtj3mEPIeEdGe9hbNz4vXZZduZvGFSI3jSFUK1DWm/x4WeDuDccXOWmH2DrtJIV8WTRS0hcDT6XFRQ==
+
 "@sinonjs/commons@^1.7.0":
   version "1.8.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.8.1.tgz#e7df00f98a203324f6dc7cc606cad9d4a8ab2217"

@@ -4,6 +4,7 @@ import RNTextDetector from 'react-native-text-detector';
 
 import IPicker from 'react-native-image-crop-picker';
 import ImagePicker from 'react-native-image-picker';
+import vision from '@react-native-firebase/ml-vision';
 
 const options = {
   title: 'Pick a image',
@@ -15,7 +16,8 @@ const options = {
 
 const App = () => {
   const [image, setImage] = useState(null);
-  const [result, setResult] = useState([]);
+  const [result, setResult] = useState();
+  const [offlineres, setOfflineres] = useState();
 
   const chooseFile = async () => {
     ImagePicker.showImagePicker(options, async (response) => {
@@ -28,21 +30,38 @@ const App = () => {
           height: 50,
         }).then(async (img) => {
           setResult([]);
+          setOfflineres([]);
           setImage(img.path);
           const visionResp = await RNTextDetector.detectFromUri(img.path);
           setResult(visionResp);
+
+          const processed = await vision().textRecognizerProcessImage(img.path);
+          setOfflineres(processed.text);
         });
       }
     });
   };
   return (
     <View style={styles.container}>
-      <Text>OCR TEST</Text>
-      <Button title="Pick Image" onPress={() => chooseFile()} />
+      <Text style={{marginVertical: 5}}>OCR TEST</Text>
       {image && (
         <Image source={{uri: image ? image : null}} style={styles.image} />
       )}
-      {result && result.map((res) => <Text key={res.text}>{res.text}</Text>)}
+      <Button title="Pick Image" onPress={() => chooseFile()} />
+      {result && (
+        <View style={styles.result}>
+          <Text style={styles.title}>text-detector result</Text>
+          {result.map((res) => (
+            <Text key={res.text}>{res.text}</Text>
+          ))}
+        </View>
+      )}
+      {offlineres && (
+        <View style={styles.result}>
+          <Text style={styles.title}>mlvision result</Text>
+          <Text>{offlineres}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -55,7 +74,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
+    marginVertical: 5,
     width: 300,
     height: 50,
+  },
+  result: {
+    padding: 8,
+    borderWidth: 2,
+    width: 300,
+    margin: 10,
+  },
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    borderBottomWidth: 2,
+    marginBottom: 5,
   },
 });
